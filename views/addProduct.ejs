@@ -1,0 +1,20 @@
+<%- include('partials/header'); %>
+<div class="container">
+    <form action="/products/addproduct" method="POST">
+        <div class="mb-3">
+            <label for="firstname" class="form-label">Name</label>
+            <input
+                type="text"
+                class="form-control"
+                id="productName"
+                name="prodname"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="firstname" class="form-label">Price</label>
+            <input type="text" class="form-control" id="price" name="price" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<%- include('partials/footer'); %>

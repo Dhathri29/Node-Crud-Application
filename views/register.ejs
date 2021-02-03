@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <span class="navbar-text"> Shopping cart </span>
+    </div>
+</nav>
+<div class="container">
+    <form action="/register" method="POST">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default"
+                >User Name</span
+            >
+            <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default"
+                name="username"
+            />
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default"
+                >Password</span
+            >
+            <input
+                type="password"
+                class="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default"
+                name="password"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+
+<%- include('partials/footer') %>

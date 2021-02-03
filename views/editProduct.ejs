@@ -1,0 +1,28 @@
+<%- include('partials/header'); %>
+<div class="container">
+    <form
+        action="/products/<%= editProductVar[0].id %>/edit?_method=PUT"
+        method="POST"
+    >
+        <div class="mb-3">
+            <input
+                name="productName"
+                type="text"
+                class="form-control"
+                id="productName"
+                value="<%= editProductVar[0].prodname %>"
+            />
+        </div>
+        <div class="mb-3">
+            <input
+                name="price"
+                type="text"
+                class="form-control"
+                id="price"
+                value="<%= editProductVar[0].price %>"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<%- include('partials/footer'); %>
