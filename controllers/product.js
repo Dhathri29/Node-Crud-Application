@@ -10,9 +10,15 @@ const register = (req, res) => {
 const registeredUser = async (req, res) => {
     const { username, password } = req.body;
 
-    if (await db.query(`select *from register where username=${username}`)) {
-        console.log("----------------all Details------------");
-        res.response("already exist");
+    var result = await db.query(
+        `SELECT username FROM register WHERE username = '` + username + `'`
+    );
+    console.log("--------username------", username);
+    console.log("------result-----", result);
+    console.log(result.length);
+    if (result.length) {
+        console.log("----------------user exists------------");
+        res.redirect("/register");
     } else {
         const salt = await bcrypt.genSalt(10);
         console.log(salt);
