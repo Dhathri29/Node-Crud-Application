@@ -9,10 +9,22 @@ const register = (req, res) => {
 //add registered user
 const registeredUser = async (req, res) => {
     const { username, password } = req.body;
-    await db.query(
-        `insert into register (username,password) values ('${username}','${password}') `
-    );
-    res.redirect("/login");
+
+    if (await db.query(`select *from register where username=${username}`)) {
+        console.log("----------------all Details------------");
+        res.response("already exist");
+    } else {
+        const salt = await bcrypt.genSalt(10);
+        console.log(salt);
+
+        const hash = await bcrypt.hash(password, salt);
+        console.log("hash :", hash);
+
+        await db.query(
+            `insert into register (username,password) values ('${username}','${hash}') `
+        );
+        res.redirect("/login");
+    }
 };
 
 //loginPage
@@ -26,21 +38,26 @@ const loginCheck = async (req, res) => {
     const { username, password } = req.body;
     console.log(req.body);
 
-    // var salt = bcrypt.genSaltSync(10);
-    // var hash = bcrypt.hashSync(password, salt);
-    // console.log(salt);
-    // console.log(hash);
-
     console.log("login post worked");
+
     const userDetails = await db.query(
-        `select * from register where username= '${username}' and password= '${hash}'`
+        `select * from register where username= '${username}'`
     );
-    console.log(userDetails.length);
-    if (userDetails.length === 0) {
-        //alert("invalid login");
-        res.redirect("/login");
-    } else {
-        res.redirect("/products");
+    console.log("userDetails:", userDetails);
+    console.log("username: ", username);
+
+    if (userDetails.length) {
+        const validPassword = await bcrypt.compare(
+            password,
+            userDetails[0].password
+        );
+
+        if (validPassword) {
+            res.redirect("/products");
+        } else {
+            res.redirect("/login");
+            console.log("not worked");
+        }
     }
 };
 
