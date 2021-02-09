@@ -1,20 +1,20 @@
 const db = require("../config/db");
 var bcrypt = require("bcryptjs");
-//register
+
+//register-(get route)
 const register = (req, res) => {
     res.render("register");
     console.log("get worked");
 };
 
-//add registered user
+//add registered user-(post route)
 const registeredUser = async (req, res) => {
     const { username, password } = req.body;
 
     var result = await db.query(
         `SELECT username FROM register WHERE username = '` + username + `'`
     );
-    console.log("--------username------", username);
-    console.log("------result-----", result);
+
     console.log(result.length);
     if (result.length) {
         console.log("----------------user exists------------");
@@ -33,15 +33,18 @@ const registeredUser = async (req, res) => {
     }
 };
 
-//loginPage
+//loginPage- (get route)
 const loginPage = (req, res) => {
     console.log("login get");
     res.render("login");
 };
 
-//loginCheck
+//loginCheck - (post route)
+
 const loginCheck = async (req, res) => {
     const { username, password } = req.body;
+
+    // console.log("%%%%%%%", sess, "%%%%%%%%");
     console.log(req.body);
 
     console.log("login post worked");
@@ -49,8 +52,8 @@ const loginCheck = async (req, res) => {
     const userDetails = await db.query(
         `select * from register where username= '${username}'`
     );
-    console.log("userDetails:", userDetails);
-    console.log("username: ", username);
+    // console.log("userDetails:", userDetails);
+    // console.log("username: ", username);
 
     if (userDetails.length) {
         const validPassword = await bcrypt.compare(
@@ -69,9 +72,16 @@ const loginCheck = async (req, res) => {
 
 //get
 const getallProductsForm = async (req, res) => {
-    const allProducts = await db.query(`select *from products`);
-    console.log(allProducts);
-    res.render("allProducts", { allProductsVar: allProducts });
+    req.session.isAuth = true;
+    // console.log(req.session);
+    // console.log(req.session.id);
+    if (req.session) {
+        const allProducts = await db.query(`select *from products`);
+        //console.log(allProducts);
+        res.render("allProducts", { allProductsVar: allProducts });
+    } else {
+        res.redirect("/login");
+    }
 };
 
 //getProduct
@@ -131,6 +141,13 @@ const addProduct = async (req, res) => {
     res.redirect("/products");
 };
 
+//logout
+const logout = (req, res) => {
+    //session destroy
+    req.session = null;
+    res.redirect("/login");
+};
+
 module.exports = {
     getallProductsForm,
     getProduct,
@@ -143,4 +160,5 @@ module.exports = {
     registeredUser,
     loginPage,
     loginCheck,
+    logout,
 };

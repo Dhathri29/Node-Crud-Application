@@ -16,6 +16,7 @@ const {
     registeredUser,
     loginPage,
     loginCheck,
+    logout,
 } = require("../controllers/product");
 
 //routes for the pages
@@ -26,5 +27,6 @@ router.route("/products/addproduct").get(addProductForm).post(addProduct);
 router.get("/products/:id", getProduct);
 router.route("/products/:id/edit").get(editProduct).put(handleEditProduct);
 router.route("/products/:id/delete").get(deleteProduct);
+router.route("/logout").get(logout);
 
 module.exports = router;
