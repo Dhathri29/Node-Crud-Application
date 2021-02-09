@@ -44,7 +44,6 @@ const loginPage = (req, res) => {
 const loginCheck = async (req, res) => {
     const { username, password } = req.body;
 
-    // console.log("%%%%%%%", sess, "%%%%%%%%");
     console.log(req.body);
 
     console.log("login post worked");
@@ -60,7 +59,9 @@ const loginCheck = async (req, res) => {
             password,
             userDetails[0].password
         );
-
+        console.log(req.session);
+        req.session.user = username;
+        console.log(req.session.user);
         if (validPassword) {
             res.redirect("/products");
         } else {
@@ -72,15 +73,13 @@ const loginCheck = async (req, res) => {
 
 //get
 const getallProductsForm = async (req, res) => {
-    req.session.isAuth = true;
-    // console.log(req.session);
-    // console.log(req.session.id);
-    if (req.session) {
+    console.log(req.session.user);
+    if (!req.session.user) {
+        res.redirect("/login");
+    } else {
         const allProducts = await db.query(`select *from products`);
         //console.log(allProducts);
         res.render("allProducts", { allProductsVar: allProducts });
-    } else {
-        res.redirect("/login");
     }
 };
 
@@ -144,7 +143,8 @@ const addProduct = async (req, res) => {
 //logout
 const logout = (req, res) => {
     //session destroy
-    req.session = null;
+    req.session.user = null;
+    req.session.destroy();
     res.redirect("/login");
 };
 

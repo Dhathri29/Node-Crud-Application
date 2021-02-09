@@ -12,6 +12,17 @@ var options = {
     user: "root",
     password: "password",
     database: "userjs",
+    schema: {
+        tableName: "sessions",
+        username: {
+            type: String,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+    },
 };
 
 var sessionStore = new MySQLStore(options);
