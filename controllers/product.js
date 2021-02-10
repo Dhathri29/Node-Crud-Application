@@ -63,7 +63,7 @@ const loginCheck = async (req, res) => {
         console.log(req.session);
         req.session.user = username;
         console.log(req.session.user);
-        if (validPassword) {
+        if (validPassword === 0) {
             res.redirect("/products");
         } else {
             res.redirect("/login");
