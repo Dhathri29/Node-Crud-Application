@@ -51,10 +51,11 @@ const loginCheck = async (req, res) => {
     const userDetails = await db.query(
         `select * from register where username= '${username}'`
     );
-    // console.log("userDetails:", userDetails);
+    console.log("userDetails:", userDetails);
     // console.log("username: ", username);
-
+    console.log(userDetails.length);
     if (userDetails.length) {
+        console.log("entered into if ");
         const validPassword = await bcrypt.compare(
             password,
             userDetails[0].password
