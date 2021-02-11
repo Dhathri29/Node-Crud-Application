@@ -62,6 +62,8 @@ const loginCheck = async (req, res) => {
         console.log(req.session);
         req.session.user = username;
         console.log(req.session.user);
+
+        console.log("%%%%%%%%%", role, "%%%%%%%%%%%55");
         if (validPassword && role == "admin") {
             res.redirect("/products");
         } else if (validPassword && role == "user") {
