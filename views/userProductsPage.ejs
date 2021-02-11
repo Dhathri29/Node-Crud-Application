@@ -1,0 +1,32 @@
+<%- include('partials/header'); %>
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/products/addProduct"> Add Product </a>
+    <a class="navbar-brand" href="/logout">Logout</a>
+</nav>
+<div class="container">
+    <div class="row">
+        <% allProductsVar.forEach(element=>{ %>
+
+        <div class="col-sm-4">
+            <div class="card">
+                <img
+                    src="<%= element.image %>"
+                    class="card-img-top"
+                    alt="..."
+                />
+                <div class="card-body">
+                    <h5 class="card-title"><%= element.prodname %></h5>
+                    <p class="card-text"><%= element.price %></p>
+                    <a
+                        href="/products/<%= element.id %>"
+                        class="btn btn-primary"
+                        >Go
+                    </a>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<%- include('partials/footer'); %>

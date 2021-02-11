@@ -9,7 +9,7 @@ const register = (req, res) => {
 
 //add registered user-(post route)
 const registeredUser = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
 
     var result = await db.query(
         `SELECT username FROM register WHERE username = '` + username + `'`
@@ -27,7 +27,7 @@ const registeredUser = async (req, res) => {
         console.log("hash :", hash);
 
         await db.query(
-            `insert into register (username,password) values ('${username}','${hash}') `
+            `insert into register (username,password,role) values ('${username}','${hash}', '${role}') `
         );
         res.redirect("/login");
     }
@@ -42,7 +42,7 @@ const loginPage = (req, res) => {
 //loginCheck - (post route)
 
 const loginCheck = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
 
     console.log(req.body);
 
@@ -55,7 +55,6 @@ const loginCheck = async (req, res) => {
     // console.log("username: ", username);
     console.log(userDetails.length);
     if (userDetails.length) {
-        console.log("entered into if ");
         const validPassword = await bcrypt.compare(
             password,
             userDetails[0].password
@@ -63,8 +62,10 @@ const loginCheck = async (req, res) => {
         console.log(req.session);
         req.session.user = username;
         console.log(req.session.user);
-        if (validPassword) {
+        if (validPassword && role == "admin") {
             res.redirect("/products");
+        } else if (validPassword && role == "user") {
+            res.redirect("/userProductsPage");
         } else {
             res.redirect("/login");
             console.log("not worked");

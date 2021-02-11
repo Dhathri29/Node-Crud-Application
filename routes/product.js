@@ -28,5 +28,6 @@ router.get("/products/:id", getProduct);
 router.route("/products/:id/edit").get(editProduct).put(handleEditProduct);
 router.route("/products/:id/delete").get(deleteProduct);
 router.route("/logout").get(logout);
+router.get("/userProductsPage", loginCheck);
 
 module.exports = router;
